@@ -1,8 +1,11 @@
 "use client"
-
-import { createProject } from "@/actions/create-project-action"
+import { useRouter } from 'next/navigation';
+import { createProject } from '@/actions/create-project-action';
+import { createProjectSchema } from '@/src/utils/schema/project.schema';
+import { errorToast, successToast } from '@/src/utils/toast';
 
 export default function AddNewProject({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
 
   const handleAddProject = async (formData: FormData) => {
     const data = {
@@ -11,11 +14,19 @@ export default function AddNewProject({ children }: { children: React.ReactNode 
       categoryId: formData.get('categoryId'),
     }
 
-    const response = await createProject(data);
-    console.log(response);
-    
+    const validate = createProjectSchema.safeParse(data);
+    if (!validate.success) {
+      validate.error.issues.forEach(error =>
+        errorToast(error.message)
+      )
+      return;
+    }
 
+    await createProject(validate.data);
+    successToast('Proyecto creado correctamente.');
+    router.push('/dashboard/projects');
   }
+
   return (
     <div className="flex justify-center">
       <div className="w-full md:max-w-xl mt-5 bg-white p-10 rounded-md">

@@ -1,13 +1,18 @@
+import { Project } from '@/src/generated/prisma';
 
-export default function CardProject() {
+type CardProjectProps = {
+  project: Project
+}
+
+export default function CardProject({ project }: CardProjectProps) {
   return (
     <div className="p-5 rounded-md bg-white">
       <h1 className="font-black text-lg">
-        Nombre del proyecto
+        Nombre : {project.name}
       </h1>
 
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit illum quisquam at tenetur nemo, explicabo quis esse nostrum id labore! Ipsum nesciunt aspernatur, ex modi recusandae libero excepturi dolore nostrum!
+        { project.description }
       </p>
 
       <div className="flex justify-center mt-3">
