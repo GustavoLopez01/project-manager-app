@@ -26,12 +26,12 @@ export default async function FormComponent({ }: FormComponentProps) {
         <div className="grid">
           <label
             className="font-bold"
-            htmlFor="projectId"
+            htmlFor="categoryId"
           >
             Tipo de proyecto
           </label>
           <select
-            name="projectId"
+            name="categoryId"
             className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
           >
             <option> -- Selecciona una opción -- </option>
