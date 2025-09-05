@@ -1,12 +1,6 @@
 "use client"
-import Link from "next/link"
-
-const ROUTES = [
-  { label: 'Projectos', path: '/dashboard/projects' },
-  { label: 'Agregar proyecto', path: '/dashboard/add-project' },
-  { label: 'Tareas', path: '/dashboard/tasks' },
-  { label: 'Mi perfil', path: '/dashboard/profile' },
-];
+import Link from 'next/link';
+import { ROUTES } from '@/src/utils/constants';
 
 export default function Sidebar() {
   return (
