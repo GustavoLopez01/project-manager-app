@@ -38,6 +38,8 @@ export default function DetailProject({
 
       {isOpen && currentTask && (
         <EditTask
+          projectId={project?.id!}
+          taskId={currentTask.id}
           isOpen={isOpen}
           setIsOpen={() => {
             setCurrentTask(null);

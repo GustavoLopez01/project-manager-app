@@ -1,17 +1,58 @@
 "use client"
-import { useState, ReactNode } from 'react';
-import CustomDialog from '../ui/Dialog';
+import { ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import updateTask from '@/actions/update-task-action';
+import CustomDialog from '@/src/components/ui/Dialog';
+import { updateTaskSchema } from '@/src/utils/schema/task.schema';
+import { Project, Task } from '@/src/generated/prisma';
+import { errorToast } from '@/src/utils/toast';
 
 type EditTaskProps = {
   children: ReactNode
   isOpen: boolean
+  taskId: Task['id']
+  projectId: Project['id']
   setIsOpen: () => void
 }
 
-export default function EditTask({ children, isOpen, setIsOpen }: EditTaskProps) {
+export default function EditTask({
+  children,
+  isOpen,
+  taskId,
+  projectId,
+  setIsOpen,
+}: EditTaskProps) {
+  const router = useRouter();
 
-  const handleEditTask = async () => {
+  const handleEditTask = async (formData: FormData) => {
+    const data = {
+      name: formData.get('name'),
+      description: formData.get('description'),
+      status: formData.get('status'),
+      priority: formData.get('priority'),
+      id: taskId,
+      projectId
+    }
 
+    const validate = updateTaskSchema.safeParse(data);
+
+    if (!validate.success) {
+      validate.error.issues.forEach(issue =>
+        errorToast(issue.message)
+      );
+      return;
+    }
+
+    const response = await updateTask(data);
+    if (response?.errors.length) {
+      response.errors.forEach(error =>
+        errorToast(error.message)
+      )
+      return;
+    }
+
+    setIsOpen();
+    router.refresh();
   }
 
   return (
@@ -21,7 +62,7 @@ export default function EditTask({ children, isOpen, setIsOpen }: EditTaskProps)
         setIsOpen={setIsOpen}
       >
         <h1 className="text-center font-bold text-2xl">
-          Nueva tarea
+          Actualizar tarea
         </h1>
         <form
           action={handleEditTask}
