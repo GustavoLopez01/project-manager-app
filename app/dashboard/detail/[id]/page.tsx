@@ -27,12 +27,12 @@ export default async function DetailPage({ params }
   return (
     <>
       <Heading>
-        Detalle de: {" "}
+        Detalles del proyecto - {" "}
         <span className="text-indigo-700 uppercase font-black">
           {project?.name}
         </span>
       </Heading>
-      
+
       <section className="w-full min-h-72 bg-white rounded-md shadow mt-5 p-3">
         <DetailProject
           project={project!}
