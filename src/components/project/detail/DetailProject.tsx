@@ -3,11 +3,11 @@ import { useState } from 'react';
 import AddNewTask from '@/src/components/task/AddNewTask';
 import TaskFormComponent from '@/src/components/task/TaskFormComponent';
 import EditTask from '@/src/components/task/EditTask';
-import DeleteModal from '@/src/components/modal/DeleteModal';
-import { FaRegEdit, FaTrashAlt } from 'react-icons/fa';
 import { ProjectWithTasks } from '@/app/dashboard/detail/[id]/page';
 import { Task, User } from '@/src/generated/prisma';
 import DeleteTask from '../../task/DeleteTask';
+import { formatDate } from '@/src/utils/helpers';
+import TableListTask from '../../task/TableListTask';
 
 type DetailProjectProps = {
   project: ProjectWithTasks
@@ -32,7 +32,7 @@ export default function DetailProject({
             setIsOpen(false);
           }}
         >
-          <TaskFormComponent />
+          <TaskFormComponent users={users} />
         </AddNewTask>
       )}
 
@@ -46,7 +46,7 @@ export default function DetailProject({
             setIsOpen(false);
           }}
         >
-          <TaskFormComponent task={currentTask} />
+          <TaskFormComponent task={currentTask} users={users} />
         </EditTask>
       )}
 
@@ -62,14 +62,35 @@ export default function DetailProject({
         />
       )}
 
-      <div className="grid items-center h-full">
+      <div className="grid items-center h-full font-barlow-regular">
         <div className="grid grid-cols-2 h-40">
           <div>
-            <h1 className="font-bold text-xl">Detalles</h1>
+            <h1 className="font-barlow-bold text-xl">Detalles</h1>
+
+            <p>
+              Descripcíon: {" "}
+              <span>
+                {project?.description}
+              </span>
+            </p>
+
+            <p>
+              Fecha de creación: {" "}
+              <span>
+                {formatDate(String(project?.createdAt))}
+              </span>
+            </p>
+
+            <p>
+              Total de tareas: {" "}
+              <span>
+                {project?.tasks.length}
+              </span>
+            </p>
           </div>
 
           <div>
-            <h1 className="font-bold text-xl">Usuarios participantes</h1>
+            <h1 className="font-barlow-bold text-xl">Usuarios participantes</h1>
             <div className="flex gap-1">
               {users.map((user) => (
                 <button
@@ -103,60 +124,20 @@ export default function DetailProject({
             </div>
           </div>
 
-          <table className="table-auto w-full border-collapse mt-10">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 text-left">Nombre</th>
-                <th className="px-4 py-2 text-left">Descripción</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {project?.tasks.map(task => (
-                <tr
-                  key={task.id}
-                  className="border-b border-gray-300 hover:bg-gray-50"
-                >
-                  <td className="px-4 py-2">
-                    {task.name}
-                  </td>
-                  <td className="px-4 py-2">
-                    {task.description}
-                  </td>
-
-                  <td className="flex justify-center gap-2 py-2">
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setCurrentTask(task);
-                        setIsOpen(true);
-                      }}
-                    >
-                      <FaRegEdit className="size-6 text-sky-700" />
-                    </button>
-
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setCurrentTask(task);
-                        setIsOpenDelete(true);
-                      }}
-                    >
-                      <FaTrashAlt className="size-5 text-red-600" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TableListTask
+            tasks={project?.tasks!}
+            setCurrentTask={setCurrentTask}
+            setIsOpen={setIsOpen}
+            setIsOpenDelete={setIsOpenDelete}
+          />
         </div>
       </div>
 
       <button
-        className="border-1 border-indigo-400 mt-10 max-w-52 rounded-full text-indigo-500 font-bold px-6 py-1 cursor-pointer"
+        className="border-1 font-barlow-bold transition border-indigo-500 text-indigo-600 hover:bg-indigo-600 hover:text-white px-2 py-1 w-56 rounded-full mt-5 cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        + Agregar tarea
+        Agregar tarea
       </button>
     </>
   )

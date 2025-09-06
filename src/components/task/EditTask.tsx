@@ -1,11 +1,11 @@
 "use client"
-import { ReactNode } from 'react';
+import { FormEvent, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import updateTask from '@/actions/update-task-action';
 import CustomDialog from '@/src/components/ui/Dialog';
 import { updateTaskSchema } from '@/src/utils/schema/task.schema';
 import { Project, Task } from '@/src/generated/prisma';
-import { errorToast } from '@/src/utils/toast';
+import { errorToast, successToast } from '@/src/utils/toast';
 
 type EditTaskProps = {
   children: ReactNode
@@ -24,18 +24,20 @@ export default function EditTask({
 }: EditTaskProps) {
   const router = useRouter();
 
-  const handleEditTask = async (formData: FormData) => {
+  const handleEditTask = async (event: FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
     const data = {
       name: formData.get('name'),
       description: formData.get('description'),
       status: formData.get('status'),
       priority: formData.get('priority'),
+      userId: formData.get('userId') || '',
       id: taskId,
       projectId
     }
 
     const validate = updateTaskSchema.safeParse(data);
-
     if (!validate.success) {
       validate.error.issues.forEach(issue =>
         errorToast(issue.message)
@@ -52,6 +54,7 @@ export default function EditTask({
     }
 
     setIsOpen();
+    successToast('Tarea actualizada con exito.')
     router.refresh();
   }
 
@@ -65,14 +68,14 @@ export default function EditTask({
           Actualizar tarea
         </h1>
         <form
-          action={handleEditTask}
+          onSubmit={handleEditTask}
           autoComplete="off"
         >
           {children}
           <input
             type='submit'
-            className='border-1 border-indigo-500 text-indigo-600 px-2 py-1 w-full rounded-md mt-5 cursor-pointer'
-            value="Guardar cambios"
+            className='border-1 font-barlow-bold transition border-indigo-500 text-indigo-600 hover:bg-indigo-600 hover:text-white px-2 py-1 w-full rounded-full mt-5 cursor-pointer'
+            value="Guardar"
           />
         </form>
       </CustomDialog>

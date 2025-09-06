@@ -23,7 +23,7 @@ export default function DeleteModal({
         setIsOpen={setIsOpen}
       >
         <div className="grid gap-6">
-          <h1 className="font-bold flex flex-col gap-2 items-center text-xl">
+          <h1 className="flex flex-col gap-2 items-center text-xl">
             <IoWarningOutline
               className="text-yellow-400 size-20"
             />
@@ -32,20 +32,20 @@ export default function DeleteModal({
 
           <p className="text-center">
             ¿Estas seguro de eliminar {" "}
-            <span className="font-bold">
+            <span className="font-barlow-bold">
               {message}
             </span>
           </p>
 
           <div className="flex justify-center gap-3">
             <button
-              className="bg-zinc-200 font-bold px-4 rounded-full py-1 cursor-pointer"
+              className="bg-zinc-200 font-barlow-bold px-4 rounded-full py-1 cursor-pointer"
               onClick={onCancel}
             >
               Cancelar
             </button>
             <button
-              className="bg-indigo-500 text-white font-bold px-4 rounded-full py-1 cursor-pointer"
+              className="bg-indigo-500 text-white font-barlow-bold px-4 rounded-full py-1 cursor-pointer"
               onClick={onAccept}
             >
               Aceptar

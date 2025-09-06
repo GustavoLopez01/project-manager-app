@@ -7,10 +7,9 @@ export default async function FormComponent({ }: FormComponentProps) {
   const categories = await getCategories();
   return (
     <>
-      <div className="space-y-5 grid gap-3">
+      <div className="space-y-5 grid gap-3 font-barlow-regular">
         <div className="grid">
           <label
-            className="font-bold"
             htmlFor="name"
           >
             Nombre del proyecto
@@ -25,7 +24,6 @@ export default async function FormComponent({ }: FormComponentProps) {
 
         <div className="grid">
           <label
-            className="font-bold"
             htmlFor="categoryId"
           >
             Tipo de proyecto
@@ -48,7 +46,6 @@ export default async function FormComponent({ }: FormComponentProps) {
 
         <div className="grid">
           <label
-            className="font-bold"
             htmlFor="description"
           >
             Descripción

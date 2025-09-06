@@ -1,14 +1,18 @@
-import { Task } from '@/src/generated/prisma';
+import { Task, User } from '@/src/generated/prisma';
 import { PRIORITY_LIST, STATUS_LIST } from '@/src/utils/constants';
 
 type TaskFormComponentProps = {
   task?: Task
+  users: User[]
 }
 
-export default function TaskFormComponent({ task }: TaskFormComponentProps) {
+export default function TaskFormComponent({
+  task,
+  users
+}: TaskFormComponentProps) {  
   return (
     <>
-      <div className="space-y-2 grid gap-3">
+      <div className="space-y-2 grid gap-3 font-barlow-regular">
         <div className="grid">
           <label
             className="font-bold"
@@ -83,6 +87,30 @@ export default function TaskFormComponent({ task }: TaskFormComponentProps) {
                 value={priority.value}
               >
                 {priority.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="grid">
+          <label
+            className="font-bold"
+            htmlFor="priority"
+          >
+            Usuario responsable
+          </label>
+          <select
+            name="userId"
+            className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
+            defaultValue={task?.userId || ''}
+          >
+            <option value=''> -- Selecciona una opción -- </option>
+            {users.map(user => (
+              <option
+                key={user.id}
+                value={user.id}
+              >
+                {user.name} {user.lastName}
               </option>
             ))}
           </select>
