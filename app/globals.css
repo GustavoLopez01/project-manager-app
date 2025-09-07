@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-gray-text: var(--desc-gray);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-barlow-bold: var(--font-barlow-bold);
+  --font-barlow-black: var(--font-barlow-black);
+  --font-barlow-regular: var(--font-barlow-regular);
+  --font-barlow-medium: var(--font-barlow-medium);
+  --font-barlow-light: var(--font-barlow-light);
+}
+
+label {
+  font-family: var(--font-barlow-bold);
+}
+
+h1 {
+  font-family: var(--font-barlow-bold);
+}

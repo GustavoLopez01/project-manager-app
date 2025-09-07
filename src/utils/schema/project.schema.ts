@@ -4,7 +4,7 @@ export const createProjectSchema = z.object({
   name: z.string()
     .min(3, 'El nombre es requerido.'),
   description: z.string()
-    .min(3, 'La descripción es requerido.'),
+    .min(3, 'La descripción es requerida.'),
   categoryId: z.string()
     .trim()
     .transform((value) => parseInt(value))
