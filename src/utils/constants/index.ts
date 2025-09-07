@@ -13,8 +13,13 @@ export const STATUS_LIST = [
 ];
 
 export const PRIORITY_LIST = [
-  { label: 'Critica', value: 'critic' },
-  { label: 'Alta', value: 'high' },
-  { label: 'Media', value: 'average' },
-  { label: 'Baja', value: 'low' },
+  { label: 'Critica', value: 'critic', index: 1 },
+  { label: 'Alta', value: 'high', index: 2 },
+  { label: 'Media', value: 'average', index: 3 },
+  { label: 'Baja', value: 'low', index: 4 },
+];
+
+export const FILTERS = [
+  { label: 'Prioridad', value: 'priority' },
+  { label: 'Fecha de creación', value: 'createdAt' },
 ];

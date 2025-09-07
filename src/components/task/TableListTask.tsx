@@ -1,6 +1,8 @@
+import { useCallback } from 'react';
 import { Task } from '@/src/generated/prisma';
 import { formatDate } from '@/src/utils/helpers';
 import { FaRegEdit, FaTrashAlt } from 'react-icons/fa';
+import { PRIORITY_LIST } from '@/src/utils/constants';
 
 type TableListTaskProps = {
   tasks: Task[]
@@ -15,6 +17,11 @@ export default function TableListTask({
   setIsOpen,
   setIsOpenDelete
 }: TableListTaskProps) {
+
+  const priorityLabel = useCallback((value: string) => {
+    return PRIORITY_LIST.find(priority => priority.value === value)?.label;
+  }, [tasks]);
+
   return (
     <>
       <table className="table-auto w-full border-collapse mt-10">
@@ -22,6 +29,7 @@ export default function TableListTask({
           <tr className="bg-gray-200 font-barlow-bold">
             <th className="px-4 py-2 text-left">Nombre</th>
             <th className="px-4 py-2 text-left">Descripción</th>
+            <th className="px-4 py-2 text-left">Prioridad</th>
             <th className="px-4 py-2 text-left">Fecha de creación</th>
             <th>Acciones</th>
           </tr>
@@ -39,9 +47,13 @@ export default function TableListTask({
                 {task.description}
               </td>
               <td className="px-4 py-2">
+                <span className="bg-red-600 block text-white min-w-15 text-center py-1 rounded-full">
+                  {priorityLabel(task.priority)}
+                </span>
+              </td>
+              <td className="px-4 py-2">
                 {formatDate(String(task.createdAt))}
               </td>
-
               <td className="flex justify-center gap-2 py-2">
                 <button
                   className="cursor-pointer"

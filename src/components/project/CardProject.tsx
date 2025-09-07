@@ -14,8 +14,11 @@ export default function CardProject({ project }: CardProjectProps) {
         Nombre : {project.name}
       </h1>
 
-      <p>
-        {project.description}
+      <p className="flex flex-col font-bold">
+        Descripción:
+        <span className="font-normal">
+          {project.description}
+        </span>
       </p>
 
       <div className="flex justify-center mt-3">
