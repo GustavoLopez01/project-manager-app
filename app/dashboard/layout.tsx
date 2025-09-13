@@ -1,3 +1,4 @@
+import Navbar from '@/src/components/dashboard/Navbar';
 import Sidebar from '@/src/components/dashboard/Sidebar';
 
 export default function DashboardLayout({
@@ -7,6 +8,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <>
+      <Navbar />
       <div className="md:flex">
         <Sidebar />
         <main className="md:flex-1 md:h-screen p-5">
