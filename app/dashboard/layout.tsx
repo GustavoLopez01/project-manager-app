@@ -11,7 +11,7 @@ export default function DashboardLayout({
       <Navbar />
       <div className="md:flex">
         <Sidebar />
-        <main className="md:flex-1 md:h-screen p-5">
+        <main className="md:flex-1 md:h-screen p-5 py-16 overflow-y-auto">
           {children}
         </main>
       </div>

@@ -29,7 +29,7 @@ export default function AddNewProject({ children }: { children: React.ReactNode 
 
   return (
     <div className="flex justify-center">
-      <div className="w-full md:max-w-xl mt-5 bg-white p-10 rounded-md">
+      <div className="w-full md:max-w-md mt-5 bg-white p-5 rounded-md">
         <form
           action={handleAddProject}
           className="space-y-5"
@@ -39,8 +39,8 @@ export default function AddNewProject({ children }: { children: React.ReactNode 
 
           <input
             type="submit"
-            className="bg-indigo-500 text-white font-bold w-full py-2 rounded-md hover:bg-indigo-600 transition-all cursor-pointer uppercase"
-            value="Guardar"
+            className="bg-indigo-500 text-white font-barlow-bold w-full py-2 rounded-md hover:bg-indigo-600 transition-all cursor-pointer"
+            value="Guardar cambios"
           />
         </form>
       </div>

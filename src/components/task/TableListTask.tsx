@@ -24,7 +24,7 @@ export default function TableListTask({
 
   return (
     <>
-      <table className="table-auto w-full border-collapse mt-10">
+      <table className="table-auto w-full border-collapse">
         <thead>
           <tr className="bg-gray-200 font-barlow-bold">
             <th className="px-4 py-2 text-left">Nombre</th>
