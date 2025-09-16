@@ -1,10 +1,17 @@
+import { User } from '@/src/generated/prisma';
 import { prisma } from '@/src/utils/prisma/prisma';
+
+type ProfileComponentProps = {
+  user: User | null
+}
 
 async function getRoles() {
   return prisma.rol.findMany();
 }
 
-export default async function ProfileComponent() {
+export default async function ProfileComponent({
+  user
+}: ProfileComponentProps) {
   const roles = await getRoles();
   return (
     <>
@@ -29,6 +36,7 @@ export default async function ProfileComponent() {
                 name="name"
                 className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
                 placeholder="Nombre"
+                defaultValue={user?.name}
               />
             </div>
 
@@ -44,6 +52,7 @@ export default async function ProfileComponent() {
                 name="lastName"
                 className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
                 placeholder="Apellido"
+                defaultValue={user?.lastName}
               />
             </div>
 
@@ -73,6 +82,7 @@ export default async function ProfileComponent() {
                 name="rol"
                 className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
                 disabled
+                defaultValue={user?.rolId}
               >
                 <option> -- Selecciona una opción -- </option>
                 {roles.map(rol => (

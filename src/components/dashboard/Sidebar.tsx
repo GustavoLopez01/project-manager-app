@@ -1,8 +1,9 @@
 "use client"
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import Heading from '../ui/Heading';
 import { ROUTES } from '@/src/utils/constants';
+import { logout } from '@/actions/auth';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -22,12 +23,15 @@ export default function Sidebar() {
           </Link>
         ))}
 
-        <Link
-          className="px-10 py-4 text-xl font-barlow-regular"
-          href="/"
+        <form
+          action={logout}
         >
-          Cerrar sesión
-        </Link>
+          <input
+            type="submit"
+            className="px-10 py-4 text-xl font-barlow-regular"
+            value="Cerrar sesión"
+          />
+        </form>
       </nav>
     </aside>
   )

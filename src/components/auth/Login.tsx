@@ -1,9 +1,27 @@
-import Link from 'next/link';
+"use client"
+import { FormEvent } from 'react';
+import { signup } from '@/actions/auth';
+import { errorToast } from '@/src/utils/toast';
 
 export default function Login() {
+
+  const handleLogin = async (event: FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+    const response = await signup(formData);
+
+    if (response?.errors) {
+      response.errors.forEach(error =>
+        errorToast(error.message)
+      )
+      return;
+    }
+  }
+
   return (
     <>
       <form
+        onSubmit={handleLogin}
         className="w-96 min-h-52 p-5 flex flex-col space-y-4 bg-white rounded-xl shadow"
         autoComplete="off"
       >
@@ -43,23 +61,15 @@ export default function Login() {
           />
         </div>
 
-        {/* <input 
-          className="bg-indigo-500 text-white text-xl rounded-md w-full py-2 font-barlow-bold"
+        <input
+          className="bg-indigo-500 text-white text-xl rounded-md w-full py-2 font-barlow-bold cursor-pointer hover:bg-indigo-600 transition-all"
           type="submit"
           value="Iniciar sesión"
-        /> */}
-
-        <Link
-          href={'/dashboard/projects'}
-          className="bg-indigo-500 text-white text-center rounded-md w-full py-2 font-barlow-bold"
-        >
-          Ir a dashboard
-        </Link>
+        />
 
         <p className="text-sm text-center font-barlow-regular text-slate-600">
           ¿Aún no tienes una cuenta? - contacta con el administrador para acceder al sistema
         </p>
-
       </form>
     </>
   )
