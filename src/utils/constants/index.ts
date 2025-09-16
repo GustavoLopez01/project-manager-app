@@ -1,7 +1,7 @@
 export const ROUTES = [
   { label: 'Proyectos', path: '/dashboard/projects' },
-  { label: 'Agregar proyecto', path: '/dashboard/add-project' },
   { label: 'Tareas', path: '/dashboard/tasks' },
+  { label: 'Agregar proyecto', path: '/dashboard/add-project' },
   { label: 'Mi perfil', path: '/dashboard/profile' },
 ];
 
@@ -23,3 +23,12 @@ export const FILTERS = [
   { label: 'Prioridad', value: 'priority' },
   { label: 'Fecha de creación', value: 'createdAt' },
 ];
+
+export const FILTERS_ITEMS_PER_PAGE = [
+  { label: '5', value: 5 },
+  { label: '10', value: 10 },
+  { label: '20', value: 20 },
+  { label: '50', value: 50 },
+];
+
+export const DEFAULT_NUMBER_PAGE = 1;

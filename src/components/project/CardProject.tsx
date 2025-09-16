@@ -8,15 +8,20 @@ type CardProjectProps = {
 
 export default function CardProject({ project }: CardProjectProps) {
   const router = useRouter();
+  console.log(project);
+  
   return (
     <div className="p-5 rounded-md bg-white">
-      <h1 className="font-black text-lg">
-        Nombre : {project.name}
-      </h1>
+      <p className="font-barlow-bold text-lg grid">
+        Nombre
+        <span className="font-barlow-regular text-slate-500">
+          {project.name}
+        </span>
+      </p>
 
-      <p className="flex flex-col font-bold">
-        Descripción:
-        <span className="font-normal">
+      <p className="font-barlow-bold text-lg grid">
+        Descripción
+        <span className="font-barlow-regular text-slate-500">
           {project.description}
         </span>
       </p>

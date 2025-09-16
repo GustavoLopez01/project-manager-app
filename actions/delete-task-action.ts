@@ -1,9 +1,11 @@
 "use server"
-import { Task } from '@/src/generated/prisma';
 import { prisma } from '@/src/utils/prisma/prisma';
+import { validateSession } from '@/src/lib/session';
+import { Task } from '@/src/generated/prisma';
 
 export async function deleteTask(id: Task['id']) {
   try {
+    await validateSession();
     return await prisma.task.delete({
       where: {
         id

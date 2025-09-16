@@ -1,14 +1,20 @@
 "use client"
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AddNewTask from '@/src/components/task/AddNewTask';
 import TaskFormComponent from '@/src/components/task/TaskFormComponent';
 import EditTask from '@/src/components/task/EditTask';
 import TableListTask from '../../task/TableListTask';
 import DeleteTask from '../../task/DeleteTask';
-import { formatDate } from '@/src/utils/helpers';
-import { ProjectWithTasks } from '@/app/dashboard/detail/[id]/page';
+import Pagination from '../../pagination/Pagination';
+import ItemsPerPage from '../../pagination/ItemsPerPage';
+import { formatDate, orderTasksByFilter } from '@/src/utils/helpers';
 import { Task, User } from '@/src/generated/prisma';
-import { FILTERS, PRIORITY_LIST } from '@/src/utils/constants';
+import { ProjectWithTasks } from '@/app/dashboard/detail/[id]/page';
+import {
+  DEFAULT_NUMBER_PAGE,
+  FILTERS,
+  FILTERS_ITEMS_PER_PAGE,
+} from '@/src/utils/constants';
 
 type DetailProjectProps = {
   project: ProjectWithTasks
@@ -27,23 +33,31 @@ export default function DetailProject({
   const currentTasks = useMemo(() => {
     const tasks = [...project?.tasks ?? []];
     if (!filter) return tasks;
-    return tasks?.sort((a, b) => {
-      let p1: number | Date = 0;
-      let p2: number | Date = 0;
-
-      if (filter === 'priority') {
-        p1 = PRIORITY_LIST.find(priority => priority.value === a.priority)?.index!
-        p2 = PRIORITY_LIST.find(priority => priority.value === b.priority)?.index!
-      } else {
-        p1 = new Date(a.createdAt);
-        p2 = new Date(a.createdAt);
-      }
-
-      if (p1 < p2) return -1
-      if (p1 > p2) return 1
-      return 0;
-    });
+    return tasks?.sort((a, b) => orderTasksByFilter(filter, a, b));
   }, [project?.tasks, filter]);
+
+  const [currentPage, setCurrentPage] = useState(DEFAULT_NUMBER_PAGE);
+  const [itemsPage, setItemsPage] = useState(FILTERS_ITEMS_PER_PAGE[0].value);
+
+  const items = useMemo(() => {
+    const finalItems: number[] = [];
+    const totalItems = Math.ceil(currentTasks.length / itemsPage);
+    for (let index = 0; index < totalItems; index++) {
+      finalItems.push(index + 1);
+    }
+    return finalItems;
+  }, [currentTasks, itemsPage]);
+
+  const tasksByPage = useMemo(() => {
+    const end = currentPage * itemsPage;
+    const start = end - itemsPage;
+    return currentTasks.slice(start, end);
+  }, [currentTasks, currentPage, itemsPage]);
+
+  useEffect(() => {
+    if (items.length === DEFAULT_NUMBER_PAGE)
+      setCurrentPage(DEFAULT_NUMBER_PAGE);
+  }, [items]);
 
   return (
     <>
@@ -128,42 +142,57 @@ export default function DetailProject({
         </div>
 
         <div className="grid">
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <h1 className="font-bold text-xl">
               Tareas
             </h1>
 
-            <div className="flex gap-3 items-center">
-              <label className="min-w-24">
-                Ordenar por
-              </label>
-              <select
-                className="w-full text-sm border-1 border-gray-400 outline-0 py-1 px-2 rounded-md"
-                onChange={(e) => setFilter(e.target.value)}
-              >
-                <option value=''>
-                  -- Selecciona una opción --
-                </option>
-                {FILTERS.map(filter => (
-                  <option
-                    key={filter.value}
-                    value={filter.value}
-                  >
-                    {filter.label}
+            <div className="flex flex-wrap md:justify-end gap-5 items-center">
+              <div className="flex">
+                <label className="min-w-24">
+                  Ordenar por
+                </label>
+                <select
+                  className="w-full text-sm border-1 border-gray-400 outline-0 py-1 px-2 rounded-md"
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  <option value=''>
+                    -- Selecciona una opción --
                   </option>
-                ))}
-              </select>
+                  {FILTERS.map(filter => (
+                    <option
+                      key={filter.value}
+                      value={filter.value}
+                    >
+                      {filter.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <ItemsPerPage
+                setItems={setItemsPage}
+              />
             </div>
           </div>
 
 
           {project?.tasks?.length! > 0 ? (
-            <TableListTask
-              tasks={currentTasks!}
-              setCurrentTask={setCurrentTask}
-              setIsOpen={setIsOpen}
-              setIsOpenDelete={setIsOpenDelete}
-            />
+            <div className="mt-5">
+              <TableListTask
+                tasks={tasksByPage!}
+                setCurrentTask={setCurrentTask}
+                setIsOpen={setIsOpen}
+                setIsOpenDelete={setIsOpenDelete}
+              />
+
+              <div className="mt-5">
+                <Pagination
+                  items={items}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </div>
+            </div>
           ) : (
             <p className="text-center py-10 text-xl">
               Aún no existen tareas en el proyecto

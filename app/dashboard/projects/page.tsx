@@ -1,12 +1,14 @@
 import { prisma } from '@/src/utils/prisma/prisma';
 import CardProject from '@/src/components/project/CardProject';
 import Heading from '@/src/components/ui/Heading';
+import { getSession } from '@/src/lib/session';
 
 async function getProjects() {
   return prisma.project.findMany();
 }
 
 export default async function ProjectsPage() {
+  await getSession();
   const projects = await getProjects();
   return (
     <>

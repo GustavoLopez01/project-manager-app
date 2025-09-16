@@ -18,6 +18,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("cambia");
+  
   return (
     <html lang="en">
       <body
@@ -27,7 +29,7 @@ export default function RootLayout({
           ${barlowRegular.variable}
           ${barlowLight.variable}
           ${barlowBlack.variable}
-          antialiased bg-gray-100`
+          antialiased bg-gray-100 overflow-y-hidden`
         }
       >
         {children}
