@@ -35,6 +35,7 @@ export default function DeleteModal({
             <span className="font-barlow-bold">
               {message}
             </span>
+            ?
           </p>
 
           <div className="flex justify-center gap-3">

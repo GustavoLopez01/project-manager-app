@@ -31,16 +31,16 @@ export default function Login() {
 
         <div className="grid gap-1">
           <label
-            htmlFor="username"
+            htmlFor="email"
           >
-            Usuario
+            Correo electrónico
           </label>
 
           <input
             className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
-            id="username"
-            name="username"
-            type="text"
+            id="email"
+            name="email"
+            type="email"
             placeholder="Ingresa tu usuario"
           />
         </div>

@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 
 export async function signup(formData: FormData) {
   const data = {
-    username: formData.get('username'),
+    email: formData.get('email'),
     password: formData.get('password'),
   }
 
@@ -21,7 +21,7 @@ export async function signup(formData: FormData) {
 
   const user = await prisma.user.findFirst({
     where: {
-      lastName: validate.data.username,
+      email: validate.data.email,
       password: validate.data.password
     }
   });
@@ -30,7 +30,7 @@ export async function signup(formData: FormData) {
     return {
       errors: [
         {
-          message: `No existe usuario ${validate.data.username}, verifica la información.`
+          message: `No existe usuario ${validate.data.email}, verifica la información.`
         }
       ]
     }

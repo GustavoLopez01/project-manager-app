@@ -28,7 +28,7 @@ export default function Sidebar() {
         >
           <input
             type="submit"
-            className="px-10 py-4 text-xl font-barlow-regular"
+            className="px-10 py-4 text-xl font-barlow-regular cursor-pointer"
             value="Cerrar sesión"
           />
         </form>
