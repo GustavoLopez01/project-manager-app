@@ -3,6 +3,7 @@ export const ROUTES = [
   { label: 'Tareas', path: '/dashboard/tasks' },
   { label: 'Agregar proyecto', path: '/dashboard/add-project' },
   { label: 'Mi perfil', path: '/dashboard/profile' },
+  { label: 'Usuarios', path: '/dashboard/users' },
 ];
 
 export const STATUS_LIST = [

@@ -90,7 +90,7 @@ export default function DetailProject({
 
       {isOpenDelete && currentTask && (
         <DeleteTask
-          message={`la tarea ${currentTask.name}?`}
+          message={`la tarea ${currentTask.name}`}
           taskId={currentTask.id}
           isOpen={isOpenDelete}
           setIsOpen={() => {

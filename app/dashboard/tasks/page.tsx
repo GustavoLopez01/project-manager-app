@@ -21,7 +21,7 @@ export default async function TasksPage() {
         Mis tareas
       </Heading>
 
-      <section className="w-full min-h-72 bg-white rounded-md shadow px-6 py-4">
+      <section className="w-full min-h-72 bg-white rounded-md shadow mt-3 px-6 py-4">
         <UserTasks
           tasks={tasks}
         />

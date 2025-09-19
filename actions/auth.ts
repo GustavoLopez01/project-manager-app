@@ -1,5 +1,6 @@
 "use server"
 import { createSession } from '@/src/lib/session'
+import { isEqualToHash } from '@/src/utils/helpers'
 import { prisma } from '@/src/utils/prisma/prisma'
 import { authSchema } from '@/src/utils/schema/auth.schema'
 import { cookies } from 'next/headers'
@@ -7,7 +8,7 @@ import { redirect } from 'next/navigation'
 
 export async function signup(formData: FormData) {
   const data = {
-    username: formData.get('username'),
+    email: formData.get('email'),
     password: formData.get('password'),
   }
 
@@ -21,8 +22,7 @@ export async function signup(formData: FormData) {
 
   const user = await prisma.user.findFirst({
     where: {
-      lastName: validate.data.username,
-      password: validate.data.password
+      email: validate.data.email,
     }
   });
 
@@ -30,7 +30,29 @@ export async function signup(formData: FormData) {
     return {
       errors: [
         {
-          message: `No existe usuario ${validate.data.username}, verifica la información.`
+          message: `No existe usuario ${validate.data.email}, verifica la información.`
+        }
+      ]
+    }
+  }
+
+  if (user.isLocked) {
+    return {
+      errors: [
+        {
+          message: `El usuario ${validate.data.email}, se encuentra desactivado.`
+        }
+      ]
+    }
+  }
+
+  const isValid = await isEqualToHash(validate.data.password, user?.password!);
+
+  if (!isValid) {
+    return {
+      errors: [
+        {
+          message: `La contraseña es incorrecta.`
         }
       ]
     }

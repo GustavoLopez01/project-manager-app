@@ -1,14 +1,14 @@
 import { prisma } from '@/src/utils/prisma/prisma';
 import CardProject from '@/src/components/project/CardProject';
 import Heading from '@/src/components/ui/Heading';
-import { getSession } from '@/src/lib/session';
+import { validateSession } from '@/src/lib/session';
 
 async function getProjects() {
   return prisma.project.findMany();
 }
 
 export default async function ProjectsPage() {
-  await getSession();
+  await validateSession();
   const projects = await getProjects();
   return (
     <>
@@ -16,7 +16,7 @@ export default async function ProjectsPage() {
         Proyectos
       </Heading>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3">
         {projects.map(project => (
           <CardProject
             key={project.id}

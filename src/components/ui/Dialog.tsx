@@ -32,7 +32,7 @@ export default function CustomDialog({
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full shadow-xl relative max-w-md rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+              className="w-full shadow-xl relative max-w-md rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 font-barlow-regular"
             >
               <IoMdClose
                 className="text-black hover:text-black/50 size-5 cursor-pointer absolute right-2 top-2"

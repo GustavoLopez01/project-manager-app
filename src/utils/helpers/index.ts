@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { Task } from '@/src/generated/prisma';
 import { PRIORITY_LIST } from '@/src/utils/constants/index';
 
@@ -36,4 +37,14 @@ export const orderTasksByFilter = (
   if (firstValue < secondValue) return -1;
   if (firstValue > secondValue) return 1;
   return 0;
+}
+
+export const hashString = (str: string) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(str, salt);
+  return hash;
+}
+
+export const isEqualToHash = async (str: string, hash: string) => {
+  return await bcrypt.compare(str, hash);
 }

@@ -1,7 +1,8 @@
-import CustomDialog from '../ui/Dialog';
-import { IoWarningOutline } from 'react-icons/io5';
+import React from 'react'
+import CustomDialog from '../ui/Dialog'
+import { IoWarningOutline } from 'react-icons/io5'
 
-type DeleteModalProps = {
+type DisableModalProps = {
   isOpen: boolean
   message: String
   setIsOpen: () => void
@@ -9,13 +10,13 @@ type DeleteModalProps = {
   onCancel: () => void
 }
 
-export default function DeleteModal({
+export default function DisableModal({
   isOpen,
   message,
   setIsOpen,
   onAccept,
   onCancel
-}: DeleteModalProps) {
+}: DisableModalProps) {
   return (
     <>
       <CustomDialog
@@ -31,7 +32,7 @@ export default function DeleteModal({
           </h1>
 
           <p className="text-center">
-            ¿Estas seguro de eliminar {" "}
+            ¿Estas seguro de desactivar al usuario {" "}
             <span className="font-barlow-bold">
               {message}
             </span>
