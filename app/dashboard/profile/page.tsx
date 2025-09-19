@@ -8,6 +8,9 @@ async function getUser(userId: User['id']) {
   return prisma.user.findFirst({
     where: {
       id: userId
+    },
+    omit: {
+      password: true
     }
   });
 }
@@ -23,7 +26,7 @@ export default async function ProfilePage() {
       </Heading>
 
       <section className={`${!user ? 'opacity-50' : ''} flex justify-center`}>
-        <ProfileComponent user={user} />
+        <ProfileComponent user={user!} />
       </section>
     </>
   )

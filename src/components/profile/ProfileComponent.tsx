@@ -1,108 +1,78 @@
-import { User } from '@/src/generated/prisma';
-import { prisma } from '@/src/utils/prisma/prisma';
+"use client"
+import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { updateUser } from '@/actions/update-user-action';
+import UserFormComponent from '../user/UserFormComponent';
+import { errorToast, successToast } from '@/src/utils/toast';
+import { createUserSchema } from '@/src/utils/schema/user.schema';
+import { UserWithoutPassword } from '@/src/types';
 
 type ProfileComponentProps = {
-  user: User | null
+  user: UserWithoutPassword
 }
 
-async function getRoles() {
-  return prisma.rol.findMany();
-}
-
-export default async function ProfileComponent({
+export default function ProfileComponent({
   user
 }: ProfileComponentProps) {
-  const roles = await getRoles();
+  const router = useRouter();
+
+  const handleUpadateUser = async (event: FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+    const data = {
+      name: formData.get('name'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      rolId: Number(formData.get('rolId')),
+      password: formData.get('password'),
+      confirmPassword: formData.get('confirmPassword'),
+      isLocked: user.isLocked
+    }
+
+    if (data.password !== data.confirmPassword) {
+      errorToast('Las contraseñas no conciden.')
+      return;
+    }
+
+    const validate = createUserSchema.safeParse(data);
+
+    if (!validate.success) {
+      validate.error.issues.forEach(issue =>
+        errorToast(issue.message)
+      )
+      return;
+    }
+
+    const { confirmPassword, ...body } = data;
+    const response = await updateUser(body, user.id);
+
+    if (response?.errors?.length) {
+      response.errors.forEach(error =>
+        errorToast(error.message)
+      )
+      return;
+    }
+
+    successToast('Usuario registrado con exito.');
+    router.refresh();
+  }
+
   return (
     <>
       <div
         className="w-full md:max-w-md min-h-72 bg-white rounded-md shadow mt-5 p-5"
       >
         <form
+          onSubmit={handleUpadateUser}
           autoComplete="off"
         >
-          <div
-            className="grid grid-cols-1 gap-5"
-          >
-            <div className="grid">
-              <label
-                htmlFor="name"
-              >
-                Nombre
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
-                placeholder="Nombre"
-                defaultValue={user?.name}
-              />
-            </div>
-
-            <div className="grid">
-              <label
-                htmlFor="lastName"
-              >
-                Apellido
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
-                placeholder="Apellido"
-                defaultValue={user?.lastName}
-              />
-            </div>
-
-            <div className="grid">
-              <label
-                htmlFor="age"
-              >
-                Edad
-              </label>
-              <input
-                type="text"
-                id="age"
-                name="age"
-                className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
-                placeholder="Edad"
-              />
-            </div>
-
-            <div className="grid opacity-50">
-              <label
-                htmlFor="rol"
-              >
-                Mi rol
-              </label>
-              <select
-                id="rol"
-                name="rol"
-                className="text-sm border-1 border-gray-400 outline-0 p-2 rounded-md"
-                disabled
-                defaultValue={user?.rolId}
-              >
-                <option> -- Selecciona una opción -- </option>
-                {roles.map(rol => (
-                  <option
-                    key={rol.id}
-                    value={rol.id}
-                  >
-                    {rol.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <UserFormComponent user={user} />
 
           <div className="flex justify-center">
             <input
               type="submit"
               value="Guardar cambios"
-              className="px-6 py-2 md:max-w-xs font-barlow-bold text-white cursor-pointer rounded-full transition hover:bg-indigo-600 bg-indigo-500 mt-10 disabled:cursor-not-allowed disabled:bg-slate-300"
-              disabled
+              className="px-6 py-2 w-full font-barlow-bold text-white cursor-pointer rounded-md transition hover:bg-indigo-600 bg-indigo-500 mt-6 disabled:cursor-not-allowed"
             />
           </div>
         </form>

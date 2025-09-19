@@ -21,10 +21,16 @@ export default async function TasksPage() {
         Mis tareas
       </Heading>
 
-      <section className="w-full min-h-72 bg-white rounded-md shadow mt-3 px-6 py-4">
-        <UserTasks
-          tasks={tasks}
-        />
+      <section className={`${!tasks.length ? 'flex justify-center' : ''} w-full items-center min-h-72 bg-white rounded-md shadow mt-3 px-6 py-4`}>
+        {tasks.length ? (
+          <UserTasks
+            tasks={tasks}
+          />
+        ) : (
+          <p className='font-barlow-bold text-xl text-slate-600'>
+            Aún no tienes tareas asignadas
+          </p>
+        )}
       </section>
     </>
   )
