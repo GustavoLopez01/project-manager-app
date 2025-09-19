@@ -1,13 +1,18 @@
 "use client"
 import { useState } from 'react';
+import { redirect } from 'next/navigation';
+import { disableUser } from '@/actions/disable-user-action';
 import AddNewUser from './AddNewUser';
 import EditUser from './EditUser';
 import DeleteUser from './DeleteUser';
 import UsersTable from './UsersTable';
-import { User } from '@/src/generated/prisma';
+import DisableModal from '../modal/DisableModal';
+import { errorToast, successToast } from '@/src/utils/toast';
+import { UsersWithoutPassword } from '@/app/dashboard/users/page';
+import { UserWithoutPassword } from '@/src/types';
 
 type UsersProps = {
-  users: User[]
+  users: UsersWithoutPassword
 }
 
 export default function Users({
@@ -15,14 +20,28 @@ export default function Users({
 }: UsersProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>();
+  const [isOpenDisable, setIsOpenDisable] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserWithoutPassword | null>();
 
-  const handleDelete = (user: User) => {
+  const handleDisableUser = async (user: UserWithoutPassword) => {
+    if (!user) {
+      errorToast('El usuario es requerido.');
+      return;
+    }
+
+    await disableUser(user);
+    setCurrentUser(null);
+    setIsOpenDisable(false);
+    successToast(`Usuario ${user.isLocked ? 'desbloqueado' : 'bloqueado'} correctamente.`)
+    redirect('/dashboard/users');
+  }
+
+  const handleDelete = (user: UserWithoutPassword) => {
     setIsOpenDelete(true);
     setCurrentUser(user);
   }
 
-  const handleEdit = (user: User) => {
+  const handleEdit = (user: UserWithoutPassword) => {
     setIsOpen(true);
     setCurrentUser(user);
   }
@@ -47,6 +66,22 @@ export default function Users({
         />
       )}
 
+      {isOpenDisable && currentUser && (
+        <DisableModal
+          isOpen={isOpenDisable}
+          setIsOpen={() => {
+            setIsOpenDisable(false);
+            setCurrentUser(null);
+          }}
+          message={currentUser.email}
+          onAccept={() => handleDisableUser(currentUser)}
+          onCancel={() => {
+            setIsOpenDisable(false);
+            setCurrentUser(null);
+          }}
+        />
+      )}
+
       {isOpenDelete && currentUser && (
         <DeleteUser
           isOpen={isOpenDelete}
@@ -65,7 +100,14 @@ export default function Users({
             users={users}
             onDelete={handleDelete}
             onEdit={handleEdit}
-            onDesactivate={() => {}}
+            onDisabled={async (user) => {
+              if (user.isLocked) {
+                await handleDisableUser(user);
+              } else {
+                setCurrentUser(user);
+                setIsOpenDisable(true);
+              }
+            }}
           />
         ) : (
           <p className="text-center py-10 text-xl">

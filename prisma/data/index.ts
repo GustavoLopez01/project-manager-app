@@ -14,7 +14,7 @@ export const USERS = [
   {
     name: 'Alexander',
     lastName: 'Volkanovski',
-    password: '123',
+    password: '$2b$10$N3BwQmimMe3x/DSurZNrYuPocwIooUeDaMccuCn7wpTdNgYm7Mqw.',
     email: 'alex@gmail.com',
     isLocked: false,
     rolId: 1
@@ -22,7 +22,7 @@ export const USERS = [
   {
     name: 'Axel',
     lastName: 'Perez',
-    password: '123',
+    password: '$2b$10$N3BwQmimMe3x/DSurZNrYuPocwIooUeDaMccuCn7wpTdNgYm7Mqw.',
     email: 'axel@gmail.com',
     isLocked: false,
     rolId: 2
@@ -30,7 +30,7 @@ export const USERS = [
   {
     name: 'Gustavo',
     lastName: 'Lopez',
-    password: '123',
+    password: '$2b$10$N3BwQmimMe3x/DSurZNrYuPocwIooUeDaMccuCn7wpTdNgYm7Mqw.',
     email: 'gus@gmail.com',
     isLocked: false,
     rolId: 3

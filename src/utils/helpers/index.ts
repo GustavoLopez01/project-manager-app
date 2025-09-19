@@ -45,8 +45,6 @@ export const hashString = (str: string) => {
   return hash;
 }
 
-export const decryptHash = (str: string) => {
-  // const salt = bcrypt.
-  // const hash = bcrypt.hashSync(str, salt);
-  // return hash;
+export const isEqualToHash = async (str: string, hash: string) => {
+  return await bcrypt.compare(str, hash);
 }

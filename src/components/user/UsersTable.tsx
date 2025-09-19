@@ -1,30 +1,32 @@
-import { User } from "@/src/generated/prisma"
-import { formatDate } from "@/src/utils/helpers"
-import { FaLock, FaRegEdit, FaTrashAlt } from "react-icons/fa"
+import { UsersWithoutPassword } from '@/app/dashboard/users/page';
+import { UserWithoutPassword } from '@/src/types';
+import { formatDate } from '@/src/utils/helpers';
+import { FaLock, FaRegEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaLockOpen } from 'react-icons/fa6';
 
 type UsersTableProps = {
-  users: User[]
-  onDelete: (user: User) => void
-  onEdit: (user: User) => void
-  onDesactivate: (user: User) => void
+  users: UsersWithoutPassword
+  onDelete: (user: UserWithoutPassword) => void
+  onEdit: (user: UserWithoutPassword) => void
+  onDisabled: (user: UserWithoutPassword) => void
 }
 
 export default function UsersTable({
   users,
   onDelete,
   onEdit,
-  onDesactivate
+  onDisabled
 }: UsersTableProps) {
   return (
     <>
-      <table className="table-auto w-full border-collapse">
+      <table className="table-auto w-full border-collapse font-barlow-regular">
         <thead>
-          <tr className="bg-gray-200 font-barlow-bold">
-            <th className="px-4 py-2 text-left">#</th>
-            <th className="px-4 py-2 text-left">Nombre</th>
-            <th className="px-4 py-2 text-left">Usuario</th>
-            <th className="px-4 py-2 text-left">Fecha de creación</th>
-            <th className="px-4 py-2 text-left">Fecha de actualización</th>
+          <tr className="bg-gray-200 font-barlow-bold text-left">
+            <th className="px-4 py-2">#</th>
+            <th className="px-4 py-2">Nombre</th>
+            <th className="px-4 py-2">Usuario</th>
+            <th className="px-4 py-2">Fecha de creación</th>
+            <th className="px-4 py-2">Fecha de actualización</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -40,7 +42,7 @@ export default function UsersTable({
                 {user.name}
               </td>
               <td className="px-4 py-2">
-                {user.name}
+                {user.email}
               </td>
               <td className="px-4 py-2">
                 {formatDate(String(user.createdAt))}
@@ -65,9 +67,13 @@ export default function UsersTable({
 
                 <button
                   className="cursor-pointer"
-                  onClick={() => onDesactivate(user)}
+                  onClick={() => onDisabled(user)}
                 >
-                  <FaLock className="size-5 text-amber-500" />
+                  {user.isLocked ? (
+                    <FaLock className="size-5 text-amber-500" />
+                  ) : (
+                    <FaLockOpen className="size-5 text-amber-500" />
+                  )}
                 </button>
               </td>
             </tr>

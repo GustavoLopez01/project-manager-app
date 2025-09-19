@@ -3,12 +3,12 @@ import CustomDialog from '../ui/Dialog';
 import { useRouter } from 'next/navigation';
 import { updateUser } from '@/actions/update-user-action';
 import UserFormComponent from './UserFormComponent';
-import { createUserSchema } from '@/src/utils/schema/user.schema';
 import { errorToast, successToast } from '@/src/utils/toast';
-import { User } from '@/src/generated/prisma';
+import { createUserSchema } from '@/src/utils/schema/user.schema';
+import { UserWithoutPassword } from '@/src/types';
 
 type EditUserProps = {
-  user: User
+  user: UserWithoutPassword
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }
@@ -30,6 +30,7 @@ export default function EditUser({
       rolId: Number(formData.get('rolId')),
       password: formData.get('password'),
       confirmPassword: formData.get('confirmPassword'),
+      isLocked: user.isLocked
     }
 
     if (data.password !== data.confirmPassword) {

@@ -1,10 +1,11 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { Rol, User } from '@/src/generated/prisma';
 import { getRoles } from '@/src/utils/helper';
+import { Rol } from '@/src/generated/prisma';
+import { UserWithoutPassword } from '@/src/types';
 
 type UserFormComponentProps = {
-  user?: User
+  user?: UserWithoutPassword
 }
 
 export default function UserFormComponent({
@@ -20,13 +21,13 @@ export default function UserFormComponent({
   }
 
   useEffect(() => {
-    handleGetRoles()
+    handleGetRoles();
   }, []);
 
   return (
     <>
       <div
-        className="space-y-4"
+        className="space-y-4 font-barlow-light"
       >
         <div className="grid">
           <label htmlFor="name">

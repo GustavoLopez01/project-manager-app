@@ -1,11 +1,13 @@
 "use server"
+import { prisma } from '@/src/utils/prisma/prisma';
+import { validateSession } from '@/src/lib/session';
 import { getUserByEmail } from '@/src/utils/helper';
 import { hashString } from '@/src/utils/helpers';
-import { prisma } from '@/src/utils/prisma/prisma';
 import { createUserSchema } from '@/src/utils/schema/user.schema';
 
 export async function createUser(formData: unknown) {
   try {
+    await validateSession();
     const validate = createUserSchema.safeParse(formData);
 
     if (!validate.success) {

@@ -4,9 +4,11 @@ import { hashString } from '@/src/utils/helpers';
 import { prisma } from '@/src/utils/prisma/prisma';
 import { createUserSchema } from '@/src/utils/schema/user.schema';
 import { User } from '@/src/generated/prisma';
+import { validateSession } from '@/src/lib/session';
 
 export async function updateUser(formData: unknown, id: User['id']) {
   try {
+    await validateSession();
     const validate = createUserSchema.safeParse(formData);
 
     if (!validate.success) {
@@ -27,7 +29,10 @@ export async function updateUser(formData: unknown, id: User['id']) {
       password: hashString(validate.data.password),
     }
 
-    await prisma.user.create({
+    await prisma.user.update({
+      where: {
+        id
+      },
       data: body
     });
 
@@ -35,6 +40,6 @@ export async function updateUser(formData: unknown, id: User['id']) {
       errors: []
     }
   } catch (error) {
-    console.error(`Ocurrió un error al crear el usuario : ${error}`);
+    console.error(`Ocurrió un error al actualizar el usuario : ${error}`);
   }
 }

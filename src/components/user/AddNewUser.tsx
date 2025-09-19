@@ -1,10 +1,10 @@
 import { FormEvent } from 'react';
-import CustomDialog from '../ui/Dialog';
+import { useRouter } from 'next/navigation';
 import { createUser } from '@/actions/create-user-action';
+import CustomDialog from '../ui/Dialog';
+import UserFormComponent from './UserFormComponent';
 import { errorToast, successToast } from '@/src/utils/toast';
 import { createUserSchema } from '@/src/utils/schema/user.schema';
-import { useRouter } from 'next/navigation';
-import UserFormComponent from './UserFormComponent';
 
 type AddNewUserProps = {
   isOpen: boolean
@@ -27,6 +27,7 @@ export default function AddNewUser({
       rolId: Number(formData.get('rolId')),
       password: formData.get('password'),
       confirmPassword: formData.get('confirmPassword'),
+      isLocked: false
     }
 
     if (data.password !== data.confirmPassword) {
