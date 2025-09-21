@@ -2,10 +2,18 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Heading from '../ui/Heading';
-import { ROUTES } from '@/src/utils/constants';
 import { logout } from '@/actions/auth';
 
-export default function Sidebar() {
+type SidebarProps = {
+  routes: {
+    label: string
+    path: string
+  }[]
+}
+
+export default function Sidebar({
+  routes
+}: SidebarProps) {
   const pathname = usePathname();
   return (
     <aside className="md:w-72 h-screen bg-white shadow-xl z-10">
@@ -13,7 +21,7 @@ export default function Sidebar() {
         <span className="w-full text-center block mt-5">Administrador de proyectos</span>
       </Heading>
       <nav className="py-6 flex flex-col">
-        {ROUTES.map(route => (
+        {routes.map(route => (
           <Link
             className={`${route.path === pathname ? 'bg-indigo-500 text-white font-barlow-bold' : 'font-barlow-regular'} px-10 py-4 text-xl`}
             key={route.path}

@@ -7,9 +7,7 @@ type CardProjectProps = {
 }
 
 export default function CardProject({ project }: CardProjectProps) {
-  const router = useRouter();
-  console.log(project);
-  
+  const router = useRouter();  
   return (
     <div className="p-5 rounded-md bg-white">
       <p className="font-barlow-bold text-lg grid">

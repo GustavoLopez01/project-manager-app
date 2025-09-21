@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 
 type SessionPayload = {
   userId: number
+  rolId: number
   expiresAt: Date
 }
 
@@ -38,9 +39,9 @@ export async function decrypt(session: string | undefined = '') {
   }
 }
 
-export async function createSession(userId: number) {
+export async function createSession(userId: number, rolId: number) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({ userId, rolId, expiresAt });
 
   await prisma.session.create({
     data: {
@@ -60,7 +61,7 @@ export async function createSession(userId: number) {
   });
 }
 
-export async function getSession() {
+export async function getSession(getRolId: boolean = false) {
   const cookieStore = await cookies();
   const session = cookieStore.get('session');
   const { payload, isAuthenticate } = await decrypt(session?.value);
@@ -68,6 +69,8 @@ export async function getSession() {
   if (!isAuthenticate) {
     redirect('/');
   }
+
+  if (getRolId) return Number(payload?.rolId)
 
   return Number(payload?.userId)
 }

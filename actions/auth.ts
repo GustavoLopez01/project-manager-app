@@ -58,7 +58,7 @@ export async function signup(formData: FormData) {
     }
   }
 
-  await createSession(user.id)
+  await createSession(user.id, user.rolId)
   redirect('/dashboard/projects')
 }
 

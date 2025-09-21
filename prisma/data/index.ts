@@ -5,6 +5,7 @@ export const CATEGORIES = [
 ];
 
 export const ROLES = [
+  { name: 'Administrador' },
   { name: 'Programador' },
   { name: 'Diseñador' },
   { name: 'Analista' },
