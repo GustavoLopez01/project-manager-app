@@ -13,9 +13,9 @@ export default async function DashboardLayout({
   return (
     <>
       <Navbar />
-      <div className="md:flex">
+      <div className="flex relative">
         <Sidebar routes={routes} />
-        <main className="md:flex-1 md:h-screen p-5 py-18 overflow-y-auto">
+        <main className="w-full md:flex-1 md:h-screen p-5 py-5 overflow-y-auto">
           {children}
         </main>
       </div>

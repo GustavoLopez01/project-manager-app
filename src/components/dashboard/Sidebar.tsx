@@ -1,7 +1,10 @@
 "use client"
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useWindowResize } from '@/src/hooks/useWindowResize';
 import Link from 'next/link';
 import Heading from '../ui/Heading';
+import store from '@/src/store/store';
 import { logout } from '@/actions/auth';
 
 type SidebarProps = {
@@ -14,11 +17,25 @@ type SidebarProps = {
 export default function Sidebar({
   routes
 }: SidebarProps) {
+  const [width] = useWindowResize();
   const pathname = usePathname();
+  const showSidebar = store(state => state.showSidebar);
+  const setShowSidebar = store(state => state.setShowSidebar);
+
+  useEffect(() => {
+    if (width <= 780) {
+      setShowSidebar(false);
+    } else {
+      setShowSidebar(true);
+    }
+  }, [width]);
+
+  if (!showSidebar) return <></>;
+
   return (
-    <aside className="md:w-72 h-screen bg-white shadow-xl z-10">
+    <aside className={`${width <= 780 ? 'absolute' : ''} w-64 md:w-72 h-screen bg-white shadow-xl z-10`}>
       <Heading>
-        <span className="w-full text-center block mt-5">Administrador de proyectos</span>
+        <span className="w-full text-center block -mt-10">Administrador de proyectos</span>
       </Heading>
       <nav className="py-6 flex flex-col">
         {routes.map(route => (
