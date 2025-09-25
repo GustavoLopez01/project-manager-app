@@ -70,9 +70,10 @@ export async function getSession(getRolId: boolean = false) {
     redirect('/');
   }
 
-  if (getRolId) return Number(payload?.rolId)
-
-  return Number(payload?.userId)
+  return {
+    userId: Number(payload?.userId),
+    roleId: Number(payload?.rolId)
+  }
 }
 
 export async function validateSession() {

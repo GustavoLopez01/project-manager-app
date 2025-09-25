@@ -3,8 +3,12 @@ import UserTasks from '@/src/components/task/UserTasks';
 import Heading from '@/src/components/ui/Heading';
 import { getSession } from '@/src/lib/session';
 import { User } from '@/src/generated/prisma';
+import { ROLE_ADMIN } from '@/src/utils/constants';
 
-async function getTasks(userId: User['id']) {
+async function getTasks(userId: User['id'], isAdmin: boolean) {
+  if (isAdmin) {
+    return prisma.task.findMany();
+  }
   return prisma.task.findMany({
     where: {
       userId
@@ -13,8 +17,9 @@ async function getTasks(userId: User['id']) {
 }
 
 export default async function TasksPage() {
-  const userId = await getSession();
-  const tasks = await getTasks(userId);
+  const { userId, roleId } = await getSession();
+  const isAdmin = roleId === ROLE_ADMIN;
+  const tasks = await getTasks(userId, isAdmin);
   return (
     <>
       <Heading>

@@ -8,8 +8,8 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const rolId = await getSession(true);
-  const routes = await getRoutesByRol(rolId);
+  const { roleId } = await getSession(true);
+  const routes = await getRoutesByRol(roleId);
   return (
     <>
       <Navbar />

@@ -96,19 +96,21 @@ export default function Users({
 
       <div className="h-full grid gap-5">
         {users.length ? (
-          <UsersTable
-            users={users}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-            onDisabled={async (user) => {
-              if (user.isLocked) {
-                await handleDisableUser(user);
-              } else {
-                setCurrentUser(user);
-                setIsOpenDisable(true);
-              }
-            }}
-          />
+          <div className="overflow-x-auto">
+            <UsersTable
+              users={users}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+              onDisabled={async (user) => {
+                if (user.isLocked) {
+                  await handleDisableUser(user);
+                } else {
+                  setCurrentUser(user);
+                  setIsOpenDisable(true);
+                }
+              }}
+            />
+          </div>
         ) : (
           <p className="text-center py-10 text-xl">
             Aún no existen usuarios

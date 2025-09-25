@@ -33,3 +33,4 @@ export const FILTERS_ITEMS_PER_PAGE = [
 ];
 
 export const DEFAULT_NUMBER_PAGE = 1;
+export const ROLE_ADMIN = 1;

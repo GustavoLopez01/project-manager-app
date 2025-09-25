@@ -177,14 +177,15 @@ export default function DetailProject({
 
 
           {project?.tasks?.length! > 0 ? (
-            <div className="mt-5">
-              <TableListTask
-                tasks={tasksByPage!}
-                setCurrentTask={setCurrentTask}
-                setIsOpen={setIsOpen}
-                setIsOpenDelete={setIsOpenDelete}
-              />
-
+            <>
+              <div className="mt-5 overflow-x-auto">
+                <TableListTask
+                  tasks={tasksByPage!}
+                  setCurrentTask={setCurrentTask}
+                  setIsOpen={setIsOpen}
+                  setIsOpenDelete={setIsOpenDelete}
+                />
+              </div>
               <div className="mt-5">
                 <Pagination
                   items={items}
@@ -192,7 +193,7 @@ export default function DetailProject({
                   setCurrentPage={setCurrentPage}
                 />
               </div>
-            </div>
+            </>
           ) : (
             <p className="text-center py-10 text-xl">
               Aún no existen tareas en el proyecto
@@ -202,7 +203,7 @@ export default function DetailProject({
       </div>
 
       <button
-        className="border-1 font-barlow-bold transition border-indigo-500 text-indigo-600 hover:bg-indigo-600 hover:text-white px-2 py-1 w-56 rounded-full mt-5 cursor-pointer"
+        className="w-56 border-1 font-barlow-bold transition border-indigo-500 text-indigo-600 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded-full mt-5 cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
         Agregar tarea

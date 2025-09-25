@@ -13,7 +13,7 @@ async function getUser(userId: User['id']) {
 }
 
 export default async function ProfilePage() {
-  const userId = await getSession();
+  const { userId } = await getSession();
   const user = await getUser(userId);
 
   return (
