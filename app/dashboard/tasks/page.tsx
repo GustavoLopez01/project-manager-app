@@ -1,7 +1,7 @@
 import { prisma } from '@/src/utils/prisma/prisma';
 import UserTasks from '@/src/components/task/UserTasks';
 import Heading from '@/src/components/ui/Heading';
-import { getSession } from '@/src/lib/session';
+import { getRolAndUserId } from '@/src/lib/session';
 import { User } from '@/src/generated/prisma';
 
 async function getTasks(userId: User['id']) {
@@ -13,7 +13,7 @@ async function getTasks(userId: User['id']) {
 }
 
 export default async function TasksPage() {
-  const userId = await getSession();
+  const { userId } = await getRolAndUserId();
   const tasks = await getTasks(userId);
   return (
     <>

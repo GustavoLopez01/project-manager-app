@@ -1,11 +1,9 @@
 "use server"
 import { prisma } from '@/src/utils/prisma/prisma';
-import { validateSession } from '@/src/lib/session';
 import { createTaskSchema } from '@/src/utils/schema/task.schema';
 
 export default async function createTask(data: unknown) {
   try {
-    await validateSession();
     const validate = createTaskSchema.safeParse(data);
     if (!validate.success) {
       return {

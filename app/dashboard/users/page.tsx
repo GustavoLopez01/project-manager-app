@@ -1,7 +1,6 @@
 import { prisma } from '@/src/utils/prisma/prisma';
 import Users from '@/src/components/user/Users';
 import Heading from '@/src/components/ui/Heading';
-import { validateSession } from '@/src/lib/session';
 
 async function getUsers() {
   return prisma.user.findMany({
@@ -14,7 +13,6 @@ async function getUsers() {
 export type UsersWithoutPassword = Awaited<ReturnType<typeof getUsers>>;
 
 export default async function UsersPage() {
-  await validateSession();
   const users = await getUsers();
   return (
     <>

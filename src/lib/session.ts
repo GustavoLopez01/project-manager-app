@@ -2,7 +2,6 @@ import 'server-only'
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { prisma } from '../utils/prisma/prisma';
-import { redirect } from 'next/navigation';
 
 type SessionPayload = {
   userId: number
@@ -61,20 +60,21 @@ export async function createSession(userId: number, rolId: number) {
   });
 }
 
-export async function getSession(getRolId: boolean = false) {
+export async function getRolAndUserId():
+  Promise<{ rolId: number, userId: number }> {
   const cookieStore = await cookies();
   const session = cookieStore.get('session');
-  const { payload, isAuthenticate } = await decrypt(session?.value);
+  const { payload } = await decrypt(session?.value);
 
-  if (!isAuthenticate) {
-    redirect('/');
+  return {
+    rolId: Number(payload?.rolId),
+    userId: Number(payload?.userId)
   }
-
-  if (getRolId) return Number(payload?.rolId)
-
-  return Number(payload?.userId)
 }
 
-export async function validateSession() {
-  return await getSession()
+export async function isAuthenticate(): Promise<Boolean> {
+  const cookieStore = await cookies();
+  const session = cookieStore.get('session');
+  const { isAuthenticate } = await decrypt(session?.value);
+  return isAuthenticate;
 }
