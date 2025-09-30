@@ -4,7 +4,6 @@ import Link from "next/link";
 import { prisma } from "@/src/utils/prisma/prisma";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ROUTES } from "@/src/utils/constants";
-import { getSession } from "@/src/lib/session";
 
 async function getProject(id: number) {
   return prisma.project.findUnique({
@@ -25,14 +24,13 @@ export type ProjectWithTasks = Awaited<ReturnType<typeof getProject>>;
 
 export default async function DetailPage({ params }
   : { params: Promise<{ id: string }> }) {
-  await getSession();
   const { id } = await params;
   const project = await getProject(Number(id));
   const users = await getUsers();
   return (
     <>
       <Heading>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center">
           <div className="font-barlow-bold">
             Detalles del proyecto - {" "}
             <span className="text-indigo-700 uppercase font-black">

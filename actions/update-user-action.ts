@@ -4,11 +4,9 @@ import { hashString } from '@/src/utils/helpers';
 import { prisma } from '@/src/utils/prisma/prisma';
 import { createUserSchema } from '@/src/utils/schema/user.schema';
 import { User } from '@/src/generated/prisma';
-import { validateSession } from '@/src/lib/session';
 
 export async function updateUser(formData: unknown, id: User['id']) {
   try {
-    await validateSession();
     const validate = createUserSchema.safeParse(formData);
 
     if (!validate.success) {

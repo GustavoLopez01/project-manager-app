@@ -1,7 +1,7 @@
 import { prisma } from '@/src/utils/prisma/prisma';
 import ProfileComponent from '@/src/components/profile/ProfileComponent';
 import Heading from '@/src/components/ui/Heading';
-import { getSession } from '@/src/lib/session';
+import { getRolAndUserId } from '@/src/lib/session';
 import { User } from '@/src/generated/prisma';
 
 async function getUser(userId: User['id']) {
@@ -13,7 +13,7 @@ async function getUser(userId: User['id']) {
 }
 
 export default async function ProfilePage() {
-  const userId = await getSession();
+  const { userId } = await getRolAndUserId();
   const user = await getUser(userId);
 
   return (
