@@ -47,12 +47,14 @@ export default function UserTasks({
         />
       </div>
 
-      <TableListTask
-        setCurrentTask={() => { }}
-        setIsOpen={() => { }}
-        setIsOpenDelete={() => { }}
-        tasks={tasksByPage}
-      />
+      <div className="overflow-x-auto">
+        <TableListTask
+          setCurrentTask={() => { }}
+          setIsOpen={() => { }}
+          setIsOpenDelete={() => { }}
+          tasks={tasksByPage}
+        />
+      </div>
 
       <div className="mt-5">
         <Pagination

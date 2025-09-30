@@ -1,6 +1,6 @@
 "use server"
 import { createSession } from '@/src/lib/session'
-import { isEqualToHash } from '@/src/utils/helpers'
+import { getRoutesByRol, isEqualToHash } from '@/src/utils/helpers'
 import { prisma } from '@/src/utils/prisma/prisma'
 import { authSchema } from '@/src/utils/schema/auth.schema'
 import { cookies } from 'next/headers'
@@ -58,8 +58,9 @@ export async function signup(formData: FormData) {
     }
   }
 
-  await createSession(user.id)
-  redirect('/dashboard/projects')
+  await createSession(user.id, user.rolId)
+  const firstRoute = await getRoutesByRol(user.rolId);
+  redirect(firstRoute[0].path)
 }
 
 

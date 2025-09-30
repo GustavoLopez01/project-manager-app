@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { Task } from '@/src/generated/prisma';
-import { PRIORITY_LIST } from '@/src/utils/constants/index';
+import { Task, User } from '@/src/generated/prisma';
+import { PRIORITY_LIST, ROUTES } from '@/src/utils/constants/index';
+import { getRoles } from '../helper';
 
 export const formatDate = (date: string) => {
   return new Date(date).toLocaleString('es-MX', {
@@ -47,4 +48,19 @@ export const hashString = (str: string) => {
 
 export const isEqualToHash = async (str: string, hash: string) => {
   return await bcrypt.compare(str, hash);
+}
+
+export const getRoutesByRol = async (id: User['rolId']) => {
+  const roles = await getRoles();
+  const userRole = roles.find(rol => rol.id === id);
+  
+  if (userRole?.name === 'Administrador') {
+    return ROUTES;
+  }
+
+  return ROUTES.filter(route =>
+    !route.path.includes(ROUTES[0].path) &&
+    !route.path.includes(ROUTES[2].path) &&
+    !route.path.includes(ROUTES[4].path)
+  )
 }
