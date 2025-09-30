@@ -30,7 +30,7 @@ export default async function DetailPage({ params }
   return (
     <>
       <Heading>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center">
           <div className="font-barlow-bold">
             Detalles del proyecto - {" "}
             <span className="text-indigo-700 uppercase font-black">
