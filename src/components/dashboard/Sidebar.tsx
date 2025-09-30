@@ -1,17 +1,15 @@
 "use client"
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import { useWindowResize } from '@/src/hooks/useWindowResize';
 import Link from 'next/link';
 import Heading from '../ui/Heading';
 import store from '@/src/store/store';
 import { logout } from '@/actions/auth';
+import { Routes } from '@/src/types';
 
 type SidebarProps = {
-  routes: {
-    label: string
-    path: string
-  }[]
+  routes: Routes[]
 }
 
 export default function Sidebar({
@@ -21,6 +19,12 @@ export default function Sidebar({
   const pathname = usePathname();
   const showSidebar = store(state => state.showSidebar);
   const setShowSidebar = store(state => state.setShowSidebar);
+  const setRoutes = store(state => state.setRoutes);
+
+  const existURL = routes.find(route => route.path === pathname);
+  if (!existURL) {
+    redirect(routes[0].path)
+  }
 
   useEffect(() => {
     if (width <= 780) {
@@ -29,6 +33,8 @@ export default function Sidebar({
       setShowSidebar(true);
     }
   }, [width]);
+
+  useEffect(() => setRoutes(routes), [routes]);
 
   if (!showSidebar) return <></>;
 
